@@ -1,0 +1,10 @@
+# Exports originais do Power Automate (contêm e-mails, endereços do SharePoint e nomes reais) — NUNCA versionar
+exportados/
+
+# Arquivos de credenciais/ambiente
+*.env
+.env*
+credentials*.json
+*credenciais*
+
+__pycache__/

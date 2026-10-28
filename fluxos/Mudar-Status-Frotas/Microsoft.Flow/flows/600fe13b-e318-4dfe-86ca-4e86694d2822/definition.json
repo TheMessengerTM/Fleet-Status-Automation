@@ -1,0 +1,326 @@
+{
+  "name": "00000000-0000-0000-0000-000000000000",
+  "id": "/providers/Microsoft.Flow/flows/00000000-0000-0000-0000-000000000000",
+  "type": "Microsoft.Flow/flows",
+  "properties": {
+    "apiId": "/providers/Microsoft.PowerApps/apis/shared_logicflows",
+    "displayName": "Mudar Status - Frotas",
+    "definition": {
+      "metadata": {
+        "processAdvisorMetadata": null,
+        "flowChargedByPaygo": null,
+        "flowclientsuspensionreason": "None",
+        "flowclientsuspensiontime": null,
+        "flowclientsuspensionreasondetails": null,
+        "provisioningMethod": "FromDefinition",
+        "failureAlertSubscription": true,
+        "creationSource": "Portal",
+        "modifiedSources": "Portal"
+      },
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        },
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        }
+      },
+      "triggers": {
+        "Quando_um_item_é_criado_ou_modificado": {
+          "recurrence": {
+            "frequency": "Minute",
+            "interval": 1
+          },
+          "evaluatedRecurrence": {
+            "frequency": "Minute",
+            "interval": 1
+          },
+          "splitOn": "@triggerOutputs()?['body/value']",
+          "type": "OpenApiConnection",
+          "inputs": {
+            "parameters": {
+              "dataset": "https://SEU-TENANT.sharepoint.com/sites/SEU-SITE",
+              "table": "<<PREENCHER>>"
+            },
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+              "connectionName": "shared_sharepointonline-1",
+              "operationId": "GetOnUpdatedItems"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        }
+      },
+      "actions": {
+        "Condição": {
+          "actions": {
+            "Condição_5": {
+              "actions": {
+                "Enviar_um_email_(V2)_4": {
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "parameters": {
+                      "emailMessage/To": "exemplo@exemplo.com;exemplo@exemplo.com;exemplo@exemplo.com",
+                      "emailMessage/Subject": "Localização atual do veículo - Vila Nova Conceição",
+                      "emailMessage/Body": "<meta>\n\n<table cellpadding=\"0\" cellspacing=\"0\" style=\"background-color:#ffffff; margin-top:30px; border-radius:8px; overflow:hidden; box-shadow:0 4px 12px rgba(0,0,0,0.08);\">\n  \n  <!-- Header -->\n  <tbody><tr>\n    <td style=\"background-color:#1f2937; padding:20px; text-align:center;\">\n      <h2 style=\"color:#ffffff; margin:0;\">🚗🔄 Localização atual do veículo</h2>\n      </td>\n    </tr>\n\n    <!-- Conteúdo -->\n    <tr>\n      <td style=\"padding:30px;\">\n        \n        <table cellpadding=\"10\" cellspacing=\"0\" style=\"border-collapse:collapse;\">\n\n          <tbody><tr style=\"background-color:#f9fafb;\">\n            <td style=\"font-weight:bold; color:#374151; width:40%;\">PLACA</td>\n            <td style=\"color:#111827;\">@{triggerBody()?['Title']}</td>\n          </tr>\n\n          <tr>\n            <td style=\"font-weight:bold; color:#374151;\">POSTO DE ORIGEM</td>\n            <td style=\"color:#111827;\">@{triggerBody()?['PostoOrigem/Value']}</td>\n          </tr>\n\n          <tr>\n            <td style=\"font-weight:bold; color:#374151;\">MODELO</td>\n            <td style=\"color:#111827;\">@{triggerBody()?['Modelo/Value']}</td>\n          </tr>\n\n        </tbody></table>\n\n      </td>\n    </tr>\n\n    <!-- Footer -->\n    <tr>\n      <td style=\"background-color:#f3f4f6; padding:15px; text-align:center; font-size:12px; color:#6b7280;\">\n        Este é um e-mail automático. Por favor, não responda.\n      </td>\n    </tr>\n\n  </tbody></table>\n",
+                      "emailMessage/Importance": "Normal"
+                    },
+                    "host": {
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_office365",
+                      "connectionName": "shared_office365-1",
+                      "operationId": "SendEmailV2"
+                    },
+                    "authentication": "@parameters('$authentication')"
+                  }
+                }
+              },
+              "else": {
+                "actions": {
+                  "Enviar_um_email_(V2)_5": {
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "parameters": {
+                        "emailMessage/To": "exemplo@exemplo.com;exemplo@exemplo.com;exemplo@exemplo.com",
+                        "emailMessage/Subject": "Localização atual do veículo",
+                        "emailMessage/Body": "\n\n\n  <meta>\n\n\n\n  <table cellpadding=\"0\" cellspacing=\"0\" style=\"background-color:#ffffff; margin-top:30px; border-radius:8px; overflow:hidden; box-shadow:0 4px 12px rgba(0,0,0,0.08);\">\n    \n    <!-- Header -->\n    <tbody><tr>\n      <td style=\"background-color:#1f2937; padding:20px; text-align:center;\">\n        <h2 style=\"color:#ffffff; margin:0;\">🚗🔄 Localização atual do veículo</h2>\n      </td>\n    </tr>\n\n    <!-- Conteúdo -->\n    <tr>\n      <td style=\"padding:30px;\">\n        \n        <table cellpadding=\"10\" cellspacing=\"0\" style=\"border-collapse:collapse;\">\n\n          <tbody><tr style=\"background-color:#f9fafb;\">\n            <td style=\"font-weight:bold; color:#374151; width:40%;\">PLACA</td>\n            <td style=\"color:#111827;\">@{triggerBody()?['Title']}</td>\n          </tr>\n\n          <tr>\n            <td style=\"font-weight:bold; color:#374151;\">POSTO DE ORIGEM</td>\n            <td style=\"color:#111827;\">@{triggerBody()?['PostoOrigem/Value']}</td>\n          </tr>\n\n          <tr>\n            <td style=\"font-weight:bold; color:#374151;\">MODELO</td>\n            <td style=\"color:#111827;\">@{triggerBody()?['Modelo/Value']}</td>\n          </tr>\n\n        </tbody></table>\n\n      </td>\n    </tr>\n\n    <!-- Footer -->\n    <tr>\n      <td style=\"background-color:#f3f4f6; padding:15px; text-align:center; font-size:12px; color:#6b7280;\">\n        Este é um e-mail automático. Por favor, não responda.\n      </td>\n    </tr>\n\n  </tbody></table>\n",
+                        "emailMessage/Importance": "Normal"
+                      },
+                      "host": {
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_office365",
+                        "connectionName": "shared_office365-1",
+                        "operationId": "SendEmailV2"
+                      },
+                      "authentication": "@parameters('$authentication')"
+                    }
+                  }
+                }
+              },
+              "expression": {
+                "and": [
+                  {
+                    "contains": [
+                      "@triggerBody()?['PostoOrigem/Value']",
+                      "VILA NOVA CONCEICAO"
+                    ]
+                  }
+                ]
+              },
+              "type": "If"
+            }
+          },
+          "runAfter": {
+            "Obter_alterações_de_um_item_ou_um_arquivo_(somente_propriedades)": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {}
+          },
+          "expression": {
+            "and": [
+              {
+                "equals": [
+                  "@outputs('Obter_alterações_de_um_item_ou_um_arquivo_(somente_propriedades)')?['body/ColumnHasChanged/PostoOrigem']",
+                  true
+                ]
+              }
+            ]
+          },
+          "type": "If"
+        },
+        "Obter_alterações_de_um_item_ou_um_arquivo_(somente_propriedades)": {
+          "runAfter": {},
+          "type": "OpenApiConnection",
+          "inputs": {
+            "parameters": {
+              "dataset": "https://SEU-TENANT.sharepoint.com/sites/SEU-SITE",
+              "table": "<<PREENCHER>>",
+              "id": "@triggerBody()?['ID']",
+              "since": "@triggerBody()?['{TriggerWindowStartToken}']",
+              "includeDrafts": false
+            },
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+              "connectionName": "shared_sharepointonline-1",
+              "operationId": "GetItemChanges"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Condição_4": {
+          "actions": {
+            "Condição_2": {
+              "actions": {
+                "Condição_1": {
+                  "actions": {
+                    "Enviar_um_email_(V2)_1": {
+                      "type": "OpenApiConnection",
+                      "inputs": {
+                        "parameters": {
+                          "emailMessage/To": "exemplo@exemplo.com;exemplo@exemplo.com;exemplo@exemplo.com",
+                          "emailMessage/Subject": "Veículo enviado para manutenção - Vila Nova Conceição",
+                          "emailMessage/Body": "\n\n\n  <meta>\n\n\n\n  <table cellpadding=\"0\" cellspacing=\"0\" style=\"background-color:#ffffff; margin-top:30px; border-radius:8px; overflow:hidden; box-shadow:0 4px 12px rgba(0,0,0,0.08);\">\n    \n    <!-- Header -->\n    <tbody><tr>\n      <td style=\"background-color:#1f2937; padding:20px; text-align:center;\">\n        <h2 style=\"color:#ffffff; margin:0;\">🚗👨‍🔧 Veículo enviado para manutenção</h2>\n      </td>\n    </tr>\n\n    <!-- Conteúdo -->\n    <tr>\n      <td style=\"padding:30px;\">\n        \n        <table cellpadding=\"10\" cellspacing=\"0\" style=\"border-collapse:collapse;\">\n\n          <tbody><tr style=\"background-color:#f9fafb;\">\n            <td style=\"font-weight:bold; color:#374151; width:40%;\">PLACA</td>\n            <td style=\"color:#111827;\">@{triggerBody()?['Title']}</td>\n          </tr>\n\n          <tr>\n            <td style=\"font-weight:bold; color:#374151;\">POSTO DE ORIGEM</td>\n            <td style=\"color:#111827;\">@{triggerBody()?['PostoOrigem/Value']}</td>\n          </tr>\n\n          <tr style=\"background-color:#f9fafb;\">\n            <td style=\"font-weight:bold; color:#374151;\">POSTO DE DESTINO</td>\n            <td style=\"color:#111827;\">@{triggerBody()?['PostoDestino/Value']}</td>\n          </tr>\n\n          <tr>\n            <td style=\"font-weight:bold; color:#374151;\">MODELO</td>\n            <td style=\"color:#111827;\">@{triggerBody()?['Modelo/Value']}</td>\n          </tr>\n\n        </tbody></table>\n\n      </td>\n    </tr>\n\n    <!-- Footer -->\n    <tr>\n      <td style=\"background-color:#f3f4f6; padding:15px; text-align:center; font-size:12px; color:#6b7280;\">\n        Este é um e-mail automático. Por favor, não responda.\n      </td>\n    </tr>\n\n  </tbody></table>\n",
+                          "emailMessage/Importance": "Normal"
+                        },
+                        "host": {
+                          "apiId": "/providers/Microsoft.PowerApps/apis/shared_office365",
+                          "connectionName": "shared_office365-1",
+                          "operationId": "SendEmailV2"
+                        },
+                        "authentication": "@parameters('$authentication')"
+                      }
+                    }
+                  },
+                  "else": {
+                    "actions": {
+                      "Enviar_um_email_(V2)": {
+                        "type": "OpenApiConnection",
+                        "inputs": {
+                          "parameters": {
+                            "emailMessage/To": "exemplo@exemplo.com;exemplo@exemplo.com;exemplo@exemplo.com",
+                            "emailMessage/Subject": "Veículo enviado para manutenção",
+                            "emailMessage/Body": "\n\n\n  <meta>\n\n\n\n  <table cellpadding=\"0\" cellspacing=\"0\" style=\"background-color:#ffffff; margin-top:30px; border-radius:8px; overflow:hidden; box-shadow:0 4px 12px rgba(0,0,0,0.08);\">\n    \n    <!-- Header -->\n    <tbody><tr>\n      <td style=\"background-color:#1f2937; padding:20px; text-align:center;\">\n        <h2 style=\"color:#ffffff; margin:0;\">🚗👨‍🔧 Veículo enviado para manutenção</h2>\n      </td>\n    </tr>\n\n    <!-- Conteúdo -->\n    <tr>\n      <td style=\"padding:30px;\">\n        \n        <table cellpadding=\"10\" cellspacing=\"0\" style=\"border-collapse:collapse;\">\n\n          <tbody><tr style=\"background-color:#f9fafb;\">\n            <td style=\"font-weight:bold; color:#374151; width:40%;\">PLACA</td>\n            <td style=\"color:#111827;\">@{triggerBody()?['Title']}</td>\n          </tr>\n\n          <tr>\n            <td style=\"font-weight:bold; color:#374151;\">POSTO DE ORIGEM</td>\n            <td style=\"color:#111827;\">@{triggerBody()?['PostoOrigem/Value']}</td>\n          </tr>\n\n          <tr style=\"background-color:#f9fafb;\">\n            <td style=\"font-weight:bold; color:#374151;\">POSTO DE DESTINO</td>\n            <td style=\"color:#111827;\">@{triggerBody()?['PostoDestino/Value']}</td>\n          </tr>\n\n          <tr>\n            <td style=\"font-weight:bold; color:#374151;\">MODELO</td>\n            <td style=\"color:#111827;\">@{triggerBody()?['Modelo/Value']}</td>\n          </tr>\n\n        </tbody></table>\n\n      </td>\n    </tr>\n\n    <!-- Footer -->\n    <tr>\n      <td style=\"background-color:#f3f4f6; padding:15px; text-align:center; font-size:12px; color:#6b7280;\">\n        Este é um e-mail automático. Por favor, não responda.\n      </td>\n    </tr>\n\n  </tbody></table>\n\n",
+                            "emailMessage/Importance": "Normal"
+                          },
+                          "host": {
+                            "apiId": "/providers/Microsoft.PowerApps/apis/shared_office365",
+                            "connectionName": "shared_office365-1",
+                            "operationId": "SendEmailV2"
+                          },
+                          "authentication": "@parameters('$authentication')"
+                        }
+                      }
+                    }
+                  },
+                  "expression": {
+                    "and": [
+                      {
+                        "contains": [
+                          "@triggerBody()?['PostoOrigem/Value']",
+                          "VILA NOVA CONCEICAO"
+                        ]
+                      }
+                    ]
+                  },
+                  "type": "If"
+                }
+              },
+              "else": {
+                "actions": {
+                  "Condição_3": {
+                    "actions": {
+                      "Enviar_um_email_(V2)_2": {
+                        "type": "OpenApiConnection",
+                        "inputs": {
+                          "parameters": {
+                            "emailMessage/To": "exemplo@exemplo.com;exemplo@exemplo.com;exemplo@exemplo.com",
+                            "emailMessage/Subject": "Veículo enviado para posto temporariamente - Vila Nova Conceição",
+                            "emailMessage/Body": "\n\n\n  <meta>\n\n\n\n  <table cellpadding=\"0\" cellspacing=\"0\" style=\"background-color:#ffffff; margin-top:30px; border-radius:8px; overflow:hidden; box-shadow:0 4px 12px rgba(0,0,0,0.08);\">\n    \n    <!-- Header -->\n    <tbody><tr>\n      <td style=\"background-color:#1f2937; padding:20px; text-align:center;\">\n        <h2 style=\"color:#ffffff; margin:0;\">🚗⏳ Veículo enviado para posto temporariamente</h2>\n      </td>\n    </tr>\n\n    <!-- Conteúdo -->\n    <tr>\n      <td style=\"padding:30px;\">\n        \n        <table cellpadding=\"10\" cellspacing=\"0\" style=\"border-collapse:collapse;\">\n\n          <tbody><tr style=\"background-color:#f9fafb;\">\n            <td style=\"font-weight:bold; color:#374151; width:40%;\">PLACA</td>\n            <td style=\"color:#111827;\">@{triggerBody()?['Title']}</td>\n          </tr>\n\n          <tr>\n            <td style=\"font-weight:bold; color:#374151;\">POSTO DE ORIGEM</td>\n            <td style=\"color:#111827;\">@{triggerBody()?['PostoOrigem/Value']}</td>\n          </tr>\n\n          <tr style=\"background-color:#f9fafb;\">\n            <td style=\"font-weight:bold; color:#374151;\">POSTO DE DESTINO</td>\n            <td style=\"color:#111827;\">@{triggerBody()?['PostoDestino/Value']}</td>\n          </tr>\n\n          <tr>\n            <td style=\"font-weight:bold; color:#374151;\">MODELO</td>\n            <td style=\"color:#111827;\">@{triggerBody()?['Modelo/Value']}</td>\n          </tr>\n\n        </tbody></table>\n\n      </td>\n    </tr>\n\n    <!-- Footer -->\n    <tr>\n      <td style=\"background-color:#f3f4f6; padding:15px; text-align:center; font-size:12px; color:#6b7280;\">\n        Este é um e-mail automático. Por favor, não responda.\n      </td>\n    </tr>\n\n  </tbody></table>\n",
+                            "emailMessage/Importance": "Normal"
+                          },
+                          "host": {
+                            "apiId": "/providers/Microsoft.PowerApps/apis/shared_office365",
+                            "connectionName": "shared_office365-1",
+                            "operationId": "SendEmailV2"
+                          },
+                          "authentication": "@parameters('$authentication')"
+                        }
+                      }
+                    },
+                    "else": {
+                      "actions": {
+                        "Enviar_um_email_(V2)_3": {
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "parameters": {
+                              "emailMessage/To": "exemplo@exemplo.com;exemplo@exemplo.com;exemplo@exemplo.com",
+                              "emailMessage/Subject": "Veículo enviado para posto temporariamente",
+                              "emailMessage/Body": "\n\n\n  <meta>\n\n\n\n  <table cellpadding=\"0\" cellspacing=\"0\" style=\"background-color:#ffffff; margin-top:30px; border-radius:8px; overflow:hidden; box-shadow:0 4px 12px rgba(0,0,0,0.08);\">\n    \n    <!-- Header -->\n    <tbody><tr>\n      <td style=\"background-color:#1f2937; padding:20px; text-align:center;\">\n        <h2 style=\"color:#ffffff; margin:0;\">🚗⏳ Veículo enviado para posto temporariamente</h2>\n      </td>\n    </tr>\n\n    <!-- Conteúdo -->\n    <tr>\n      <td style=\"padding:30px;\">\n        \n        <table cellpadding=\"10\" cellspacing=\"0\" style=\"border-collapse:collapse;\">\n\n          <tbody><tr style=\"background-color:#f9fafb;\">\n            <td style=\"font-weight:bold; color:#374151; width:40%;\">PLACA</td>\n            <td style=\"color:#111827;\">@{triggerBody()?['Title']}</td>\n          </tr>\n\n          <tr>\n            <td style=\"font-weight:bold; color:#374151;\">POSTO DE ORIGEM</td>\n            <td style=\"color:#111827;\">@{triggerBody()?['PostoOrigem/Value']}</td>\n          </tr>\n\n          <tr style=\"background-color:#f9fafb;\">\n            <td style=\"font-weight:bold; color:#374151;\">POSTO DE DESTINO</td>\n            <td style=\"color:#111827;\">@{triggerBody()?['PostoDestino/Value']}</td>\n          </tr>\n\n          <tr>\n            <td style=\"font-weight:bold; color:#374151;\">MODELO</td>\n            <td style=\"color:#111827;\">@{triggerBody()?['Modelo/Value']}</td>\n          </tr>\n\n        </tbody></table>\n\n      </td>\n    </tr>\n\n    <!-- Footer -->\n    <tr>\n      <td style=\"background-color:#f3f4f6; padding:15px; text-align:center; font-size:12px; color:#6b7280;\">\n        Este é um e-mail automático. Por favor, não responda.\n      </td>\n    </tr>\n\n  </tbody></table>\n",
+                              "emailMessage/Importance": "Normal"
+                            },
+                            "host": {
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_office365",
+                              "connectionName": "shared_office365-1",
+                              "operationId": "SendEmailV2"
+                            },
+                            "authentication": "@parameters('$authentication')"
+                          }
+                        }
+                      }
+                    },
+                    "expression": {
+                      "and": [
+                        {
+                          "contains": [
+                            "@triggerBody()?['PostoDestino/Value']",
+                            "VILA NOVA CONCEICAO"
+                          ]
+                        }
+                      ]
+                    },
+                    "type": "If"
+                  }
+                }
+              },
+              "expression": {
+                "and": [
+                  {
+                    "equals": [
+                      "@triggerBody()?['PostoDestino/Value']",
+                      "MANUTENÇÃO"
+                    ]
+                  }
+                ]
+              },
+              "type": "If"
+            }
+          },
+          "runAfter": {
+            "Condição": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {}
+          },
+          "expression": {
+            "and": [
+              {
+                "equals": [
+                  "@outputs('Obter_alterações_de_um_item_ou_um_arquivo_(somente_propriedades)')?['body/ColumnHasChanged/PostoDestino']",
+                  true
+                ]
+              }
+            ]
+          },
+          "type": "If"
+        }
+      },
+      "outputs": {}
+    },
+    "connectionReferences": {
+      "shared_sharepointonline-1": {
+        "connectionName": "shared-sharepointonl-00000000-0000-0000-0000-000000000000",
+        "source": "Embedded",
+        "id": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+        "tier": "NotSpecified",
+        "apiName": "sharepointonline",
+        "isProcessSimpleApiReferenceConversionAlreadyDone": false
+      },
+      "shared_office365-1": {
+        "connectionName": "shared-office365-00000000-0000-0000-0000-000000000000",
+        "source": "Embedded",
+        "id": "/providers/Microsoft.PowerApps/apis/shared_office365",
+        "tier": "NotSpecified",
+        "apiName": "office365",
+        "isProcessSimpleApiReferenceConversionAlreadyDone": false
+      }
+    },
+    "flowFailureAlertSubscribed": false,
+    "isManaged": false
+  }
+}

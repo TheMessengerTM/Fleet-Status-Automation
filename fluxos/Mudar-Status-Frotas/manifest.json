@@ -1,0 +1,83 @@
+{
+  "schema": "1.0",
+  "details": {
+    "displayName": "Mudar Status - Frotas",
+    "description": "",
+    "createdTime": "",
+    "packageTelemetryId": "",
+    "creator": "N/A",
+    "sourceEnvironment": ""
+  },
+  "resources": {
+    "600fe13b-e318-4dfe-86ca-4e86694d2822": {
+      "type": "Microsoft.Flow/flows",
+      "suggestedCreationType": "Update",
+      "creationType": "Existing, New, Update",
+      "details": {
+        "displayName": "Mudar Status - Frotas"
+      },
+      "configurableBy": "User",
+      "hierarchy": "Root",
+      "dependsOn": [
+        "179a7c79-4c1e-4315-80a1-c82b94d87840",
+        "5894f0dc-eed2-417b-ba07-f3794d929132",
+        "767f2832-d297-468b-82b3-5a25b6022375",
+        "e05e7999-0eb4-4ec0-b034-40d88eadcf2b"
+      ]
+    },
+    "179a7c79-4c1e-4315-80a1-c82b94d87840": {
+      "id": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+      "name": "shared_sharepointonline",
+      "type": "Microsoft.PowerApps/apis",
+      "suggestedCreationType": "Existing",
+      "details": {
+        "displayName": "SharePoint",
+        "iconUri": "https://static.powerapps.com/resource/ppcr/releases/v1.0.1827/1.0.1827.4913/sharepointonline/icon.png"
+      },
+      "configurableBy": "System",
+      "hierarchy": "Child",
+      "dependsOn": []
+    },
+    "5894f0dc-eed2-417b-ba07-f3794d929132": {
+      "type": "Microsoft.PowerApps/apis/connections",
+      "suggestedCreationType": "Existing",
+      "creationType": "Existing",
+      "details": {
+        "displayName": "<<PREENCHER>>",
+        "iconUri": "https://static.powerapps.com/resource/ppcr/releases/v1.0.1827/1.0.1827.4913/sharepointonline/icon.png"
+      },
+      "configurableBy": "User",
+      "hierarchy": "Child",
+      "dependsOn": [
+        "179a7c79-4c1e-4315-80a1-c82b94d87840"
+      ]
+    },
+    "767f2832-d297-468b-82b3-5a25b6022375": {
+      "id": "/providers/Microsoft.PowerApps/apis/shared_office365",
+      "name": "shared_office365",
+      "type": "Microsoft.PowerApps/apis",
+      "suggestedCreationType": "Existing",
+      "details": {
+        "displayName": "Office 365 Outlook",
+        "iconUri": "https://static.powerapps.com/resource/ppcr/releases/v1.0.1831/1.0.1831.5113/office365/icon.png"
+      },
+      "configurableBy": "System",
+      "hierarchy": "Child",
+      "dependsOn": []
+    },
+    "e05e7999-0eb4-4ec0-b034-40d88eadcf2b": {
+      "type": "Microsoft.PowerApps/apis/connections",
+      "suggestedCreationType": "Existing",
+      "creationType": "Existing",
+      "details": {
+        "displayName": "<<PREENCHER>>",
+        "iconUri": "https://static.powerapps.com/resource/ppcr/releases/v1.0.1831/1.0.1831.5113/office365/icon.png"
+      },
+      "configurableBy": "User",
+      "hierarchy": "Child",
+      "dependsOn": [
+        "767f2832-d297-468b-82b3-5a25b6022375"
+      ]
+    }
+  }
+}
